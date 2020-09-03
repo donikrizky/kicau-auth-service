@@ -1,5 +1,5 @@
 server:
-  port: 9100
+  port: 9001
 
 spring:
   application:
@@ -20,7 +20,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:

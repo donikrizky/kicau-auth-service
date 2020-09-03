@@ -1,4 +1,4 @@
-package com.donikrizky.kicau.authservice.service;
+package com.donikrizky.kicau.authservice.service.impl;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -20,6 +20,7 @@ import com.donikrizky.kicau.authservice.entity.User;
 import com.donikrizky.kicau.authservice.exception.BadRequestException;
 import com.donikrizky.kicau.authservice.exception.UnauthorizedException;
 import com.donikrizky.kicau.authservice.repository.UserRepository;
+import com.donikrizky.kicau.authservice.service.AuthService;
 
 import io.micrometer.core.instrument.util.StringUtils;
 
@@ -35,18 +36,6 @@ public class AuthServiceImpl implements AuthService {
 	public AuthServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
-		this.addDummyUser();
-	}
-
-	private void addDummyUser() {
-		List<User> users = new ArrayList<User>();
-		users.add(
-				User.builder().userId(1).username("username1").passwordHashed(passwordEncoder.encode("12345")).build());
-		users.add(
-				User.builder().userId(2).username("username2").passwordHashed(passwordEncoder.encode("12345")).build());
-		users.add(
-				User.builder().userId(3).username("username3").passwordHashed(passwordEncoder.encode("12345")).build());
-		userRepository.saveAll(users);
 	}
 
 	@Override
@@ -67,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public boolean logout(Long userId) {
+	public boolean logout(Integer userId) {
 		User data = userRepository.findById(userId).orElseThrow(() -> new BadRequestException("Error: User Not Found"));
 
 		data.setLogout(new Date());
@@ -118,15 +107,8 @@ public class AuthServiceImpl implements AuthService {
 		User user = new User();
 		user.setUsername(requestDTO.getUsername());
 		user.setPasswordHashed(passwordEncoder.encode(requestDTO.getPassword()));
+		user.setDob(dob);
 		user = userRepository.save(user);
-
-//		Profile profile = new Profile();
-//		profile.setUser(user);
-//		profile.setFullName(register.getFullname());
-//		profile.setDob(dob);
-//		profile.setGender(register.getGender());
-//		profile.setDataState(DataState.ACTIVE);
-//		profileRepository.save(profile);
 
 	}
 

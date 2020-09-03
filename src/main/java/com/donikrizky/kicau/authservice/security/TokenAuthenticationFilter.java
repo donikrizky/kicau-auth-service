@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.donikrizky.kicau.authservice.service.CustomUserDetailsService;
+import com.donikrizky.kicau.authservice.service.impl.CustomUserDetailsService;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
@@ -33,7 +33,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            Long userId = tokenProvider.getUserIdFromToken(jwt);
+            Integer userId = tokenProvider.getUserIdFromToken(jwt);
             Date logoutTime = tokenProvider.getLogoutTimeFromToken(jwt);
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, logoutTime)) {
 

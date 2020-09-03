@@ -43,13 +43,13 @@ public class TokenProvider {
                 .compact();
     }
 
-    public Long getUserIdFromToken(String token) {
+    public Integer getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(appProperties.getAuth().getTokenSecret())
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return Integer.parseInt(claims.getSubject());
     }
 
     public Date getLogoutTimeFromToken(String token) {

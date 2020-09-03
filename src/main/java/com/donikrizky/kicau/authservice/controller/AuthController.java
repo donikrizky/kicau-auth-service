@@ -43,8 +43,8 @@ public class AuthController extends CommonResource {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<ResponseBody> login(@RequestBody LoginRequestDTO requestDTO, HttpServletRequest request) {
 		authService.login(requestDTO.getUsername(), requestDTO.getPassword());
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getUsername(), requestDTO.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(requestDTO.getUsername(), requestDTO.getPassword()));
 		String jwt = tokenProvider.createToken(authentication);
 
 		return ResponseEntity.ok(getResponseBody(HttpStatus.OK.value(), jwt, null));

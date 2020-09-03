@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.donikrizky.kicau.authservice.security.RestAuthenticationEntryPoint;
 import com.donikrizky.kicau.authservice.security.TokenAuthenticationFilter;
-import com.donikrizky.kicau.authservice.service.CustomUserDetailsService;
+import com.donikrizky.kicau.authservice.service.impl.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity

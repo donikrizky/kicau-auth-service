@@ -1,5 +1,6 @@
 package com.donikrizky.kicau.authservice.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.donikrizky.kicau.authservice.config.audit.Auditable;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import io.swagger.annotations.ApiModel;
@@ -55,6 +57,11 @@ public class User extends Auditable<String> {
 	
 	@ApiModelProperty(notes = "User hashed password")
 	private String passwordHashed;
+
+	@NotNull
+	@JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
+	@ApiModelProperty(notes = "Profile birth of date")
+	private LocalDate dob;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date logout;

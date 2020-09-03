@@ -16,7 +16,6 @@ public class RegisterUserRequestDTO {
 	private String fullname;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private String dob;
-	private String gender;
 	private String username;
 	private String password;
 	private String confirmPassword;

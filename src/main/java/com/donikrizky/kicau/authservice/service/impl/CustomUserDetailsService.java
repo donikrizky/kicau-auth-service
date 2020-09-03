@@ -1,4 +1,4 @@
-package com.donikrizky.kicau.authservice.service;
+package com.donikrizky.kicau.authservice.service.impl;
 
 import javax.transaction.Transactional;
 
@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	@Transactional
-	public UserDetails loadUserById(Long id) {
+	public UserDetails loadUserById(Integer id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 
 		return UserPrincipal.create(user);
