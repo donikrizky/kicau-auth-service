@@ -2,6 +2,15 @@
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,maven
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 ### Eclipse ###
 .metadata
 bin/
