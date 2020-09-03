@@ -17,14 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.donikrizky.kicau.authservice.common.CommonResource;
 import com.donikrizky.kicau.authservice.common.ResponseBody;
-import com.donikrizky.kicau.authservice.dto.request.LoginWrapper;
+import com.donikrizky.kicau.authservice.dto.request.LoginRequestDTO;
+import com.donikrizky.kicau.authservice.dto.request.RegisterUserRequestDTO;
 import com.donikrizky.kicau.authservice.security.TokenProvider;
 import com.donikrizky.kicau.authservice.service.AuthService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 
-@Api(value = "Auth Management System")
+@Api(value = "Authentication Management System")
 @RestController
 @Validated
 public class AuthController extends CommonResource {
@@ -40,10 +41,10 @@ public class AuthController extends CommonResource {
 
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<ResponseBody> login(@RequestBody LoginWrapper data, HttpServletRequest request) {
-		authService.login(data.getUsername(), data.getPassword());
+	public ResponseEntity<ResponseBody> login(@RequestBody LoginRequestDTO requestDTO, HttpServletRequest request) {
+		authService.login(requestDTO.getUsername(), requestDTO.getPassword());
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getUsername(), requestDTO.getPassword()));
 		String jwt = tokenProvider.createToken(authentication);
 
 		return ResponseEntity.ok(getResponseBody(HttpStatus.OK.value(), jwt, null));
@@ -56,5 +57,17 @@ public class AuthController extends CommonResource {
 		authService.logout(tokenProvider.getUserIdFromToken(token));
 
 		return ResponseEntity.ok(getResponseBody(HttpStatus.OK.value(), null, null));
+	}
+
+	@PostMapping("/register")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<ResponseBody> register(@RequestBody RegisterUserRequestDTO requestDTO,
+			HttpServletRequest request) {
+		authService.save(requestDTO);
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(requestDTO.getUsername(), requestDTO.getPassword()));
+		String jwt = tokenProvider.createToken(authentication);
+
+		return new ResponseEntity<>(getResponseBody(HttpStatus.CREATED.value(), jwt, null), HttpStatus.CREATED);
 	}
 }
